@@ -1,0 +1,60 @@
+name: PREDICT
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python & data science
+  - python=3.11
+  - pandas
+  - numpy
+  - scipy
+  - matplotlib-base
+  - seaborn
+  - scikit-learn
+  - statsmodels
+
+  # R base and recommended
+  - r-base=4.4.2
+  - r-recommended
+  - r-boot
+  - r-class
+  - r-cluster
+  - r-codetools
+  - r-foreign
+  - r-kernsmooth
+  - r-lattice
+  - r-mass
+  - r-matrix
+  - r-mgcv
+  - r-nlme
+  - r-nnet
+  - r-rpart
+  - r-spatial
+  - r-survival
+
+  # R package management
+  - r-biocmanager
+  - r-devtools
+
+  # Native compilation & headers (for Bioconductor builds)
+  - make
+  - cmake
+  - pkg-config
+  - zlib
+  - bzip2
+  - xz
+  - libcurl
+  - libxml2
+  - openssl
+
+  # Compilers for native R packages
+  - gcc_linux-64
+  - gxx_linux-64
+  - gfortran_linux-64
+
+  # pip packages
+  - pip
+  - pip:
+      - streamlit
+      - plotly
+      - pyahocorasick

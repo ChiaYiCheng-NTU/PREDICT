@@ -1,0 +1,125 @@
+import sys
+import os
+sys.path.append('./')
+from datetime import datetime
+from Functions.RanKmers.Packages import Dealing_with_Folders
+from Functions.RanKmers.Packages import Gff_to_Coord
+from Functions.RanKmers.Packages import Coord_to_Fasta
+from Functions.RanKmers.Packages import Split_data
+from Functions.RanKmers.Packages import TPTN_to_Fasta
+from Functions.RanKmers.Packages import Get_Kmers
+from Functions.RanKmers.Packages import Balance_Data
+from Functions.RanKmers.Packages import Kmers_to_DF
+from Functions.RanKmers.Packages import DF_to_ML
+from Functions.RanKmers.Packages import Integrate_ML_Results
+from Functions.RanKmers.Packages import Generate_Other_Outputs
+import warnings
+warnings.filterwarnings("ignore")
+
+
+def main(features = "gene", alg = "RandomForest", up_stream = 500, down_stream = 1000):
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 1. Copy "FindKmers" folder(in "Demanded_Data" folder, old folder) to "Result" folder's new folder ##
+    print("Dealing_with_folders...")
+    new_folder = Dealing_with_Folders.main()
+    print("Dealing_with_folders Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 2. From Gff file extract sequnce coord(start nucleotide number & end nucleotide number) ##
+    print("Gff_to_Coord...")
+    Gff_to_Coord.main(new_folder, features=features, up_stream=up_stream, down_stream=down_stream)
+    print ("Gff_to_Coord Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 3. Use Coord to get exact sequence
+    print("Coord_to_Fasta...")
+    Coord_to_Fasta.main(new_folder)
+    print("Coord_to_Fasta Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 4. Split train/test set (70/30)
+    print("Split_data...")
+    copies = Split_data.main(new_folder, n_splits=5, seed=42)
+    print("Split_data Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 5. Generate train/test_set's fasta file
+    print("TPTN_to_Fasta...")
+    TPTN_to_Fasta.main(new_folder, For_BedData=False)
+    print("TPTN_to_Fasta Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 6. Get Kmers from input
+    print("Get_Kmers...")
+    Get_Kmers.main(new_folder)
+    print("Get_Kmers Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 7. Balance TP/TN Data
+    print("Balance_Data...")
+    Balance_Data.main(new_folder)
+    print("Balance_Data Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 8. Get sequences of Balanced data
+    print("BalancedData_to_Fasta...")
+    TPTN_to_Fasta.main(new_folder, For_BedData=True)
+    print("BalancedData_to_Fasta Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 9. Make DataFrame
+    print("Kmers_to_DF...")
+    Kmers_to_DF.main(new_folder, copies)
+    print("Kmers_to_DF Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 10. Fit Machine Learning
+    print("DF_to_ML...")
+    BestCopy = DF_to_ML.main(new_folder, copies, alg=alg)
+    print("DF_to_ML Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 11. Integrate ML results
+    print("Integrate_ML_results...")
+    Integrate_ML_Results.main(new_folder, alg=alg)
+    print("Integrate_ML_results Done!")
+    print("=======================================================")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        ## 12. Generate other useful outputs
+    print("Generate other useful outputs...")
+    Generate_Other_Outputs.main(new_folder, BestCopy)
+    print("Generate other useful outputs Done!")
+    print("--+--+--+--+--+--+--+--+--E..N..D--+--+--+--+--+--+--+--+--")
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+    return new_folder
+
+if __name__ == "__main__":
+    StartTime = datetime.now()
+
+    print(f"Folder: {main()}")
+
+    EndTime = datetime.now()
+    TimeDiff = int((EndTime - StartTime).total_seconds())
+    print(f"Time cost: {TimeDiff//3600}hr {(TimeDiff % 3600)//60}min {TimeDiff%60}sec")
