@@ -41,7 +41,7 @@ python /home/hpc/chiayicheng/scratch/users/Kai/PREDICT/PREDICT.py FindKmers
 # python /home/hpc/chiayicheng/scratch/users/Kai/PREDICT/PREDICT.py TeamKmers
 
 # Custom arguments
-# python /home/hpc/chiayicheng/scratch/users/Kai/PREDICT/PREDICT.py TeamKmers --Motif False --TPCSThreshold 0.75 --TPTNCSThreshold 
+# python /home/hpc/chiayicheng/scratch/users/Kai/PREDICT/PREDICT.py TeamKmers --Motif False --TPCSThreshold 0.75 --TPTNCSThreshold 0.3
 
 
 # --- ViewKmers --- NOT recommended to run this module on HPC, better to run it locally in terminal.
