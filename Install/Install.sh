@@ -60,14 +60,6 @@ fi
 # Delete Install folder
 echo "Environment setup complete! ${ENV_NAME} created and all packages installed."
 echo "Deleting Install folder..."
-cd ..
-rm -rf Install
-
-if [ $? -ne 0 ]; then
-    echo "Warning: Failed to delete Install folder."
-else
-    echo "Install folder deleted successfully."
-fi
 
 echo "Activate the environment with:"
 echo "conda activate ${ENV_NAME}"
