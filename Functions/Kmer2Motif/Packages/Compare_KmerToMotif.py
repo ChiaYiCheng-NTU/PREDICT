@@ -108,7 +108,7 @@ def Compare_Process(args):
     CreateMotif_command = Make_CreateMotif_command(temp_MotifList, temp_MotifInfoList)
     CompareMotifs_command = Make_CompareMotifs_command(new_folder, CreateMotif_command, Kmer)
     tempRscript_path = Make_tempRscript(new_folder, CreateMotif_command, CompareMotifs_command, Ori_Kmer)
-    R_command = f"conda run -n PREDICTm Rscript {tempRscript_path}"
+    R_command = f"conda run -n PREDICT Rscript {tempRscript_path}"
     
     CompareMotifs_output = subprocess.run(R_command, shell=True, capture_output=True, text=True)
     
