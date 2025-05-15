@@ -16,6 +16,8 @@ fixed_colors = [
 
 def generate_colors(kmers):
     kmer_count = len(kmers)
+    if kmer_count > 10:
+        raise ValueError("Inputed more than 10 Kmers. Please lower the number of Kmers (<=10).")
     colors = fixed_colors[:kmer_count]
     return {kmers[i]: colors[i] for i in range(kmer_count)}
 
