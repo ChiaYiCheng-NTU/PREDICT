@@ -3,13 +3,12 @@
 # --------------------------------------------------------------
 # |  Users have two parameters to change in this .sh file      |
 # |  1. Line14: cd [your actual path of "Install" folder]      |
-# |  2. Line16: CONDA_BASE=[your actual path of conda folder]  |
 # --------------------------------------------------------------
 
 cd "User/PREDICT/Install" ## SHOULD BE REPLACED BY USER
 
 # Ensure Conda is available    
-CONDA_BASE="/path/to/conda"  ## SHOULD BE REPLACED BY USER
+CONDA_BASE="$(conda info --base)"
 if [ ! -f "${CONDA_BASE}/etc/profile.d/conda.sh" ]; then
     echo "Conda not found at ${CONDA_BASE}. Please check Conda installation."
     exit 1
