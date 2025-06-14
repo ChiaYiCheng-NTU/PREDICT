@@ -1,14 +1,10 @@
 #!/bin/bash
 
-# --------------------------------------------------------------
-# |  Users have two parameters to change in this .sh file      |
-# |  1. Line14: cd [your actual path of "Install" folder]      |
-# --------------------------------------------------------------
+echo "Installing at: $PWD"
+echo "conda base path:$CONDA_BASE"
+cd $PWD
 
-cd "User/PREDICT/Install" ## SHOULD BE REPLACED BY USER
-
-# Ensure Conda is available    
-CONDA_BASE="$(conda info --base)"
+# Ensure Conda is available
 if [ ! -f "${CONDA_BASE}/etc/profile.d/conda.sh" ]; then
     echo "Conda not found at ${CONDA_BASE}. Please check Conda installation."
     exit 1
@@ -58,7 +54,6 @@ fi
 
 # Delete Install folder
 echo "Environment setup complete! ${ENV_NAME} created and all packages installed."
-echo "Deleting Install folder..."
 
 echo "Activate the environment with:"
 echo "conda activate ${ENV_NAME}"

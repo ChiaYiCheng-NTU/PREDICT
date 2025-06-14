@@ -1,19 +1,15 @@
 #!/bin/bash
 
-# PBS directives (modify as needed)
 #PBS -l select=2:ncpus=16
 #PBS -N PREDICT
 #PBS -q XXX
 #PBS -V
-# --------------------------------------------------------------
-# |  Users have one parameters to change in this .sh file      |
-# |  1. Line14: cd [your actual path of "Install" folder]      |
-# --------------------------------------------------------------
 
-cd "User/PREDICT/Install" ## SHOULD BE REPLACED BY USER
+echo "Installing at: $PBS_O_WORKDIR"
+echo "conda base path:$CONDA_BASE"
+cd $PBS_O_WORKDIR
 
 # Ensure Conda is available    
-CONDA_BASE="$(conda info --base)"
 if [ ! -f "${CONDA_BASE}/etc/profile.d/conda.sh" ]; then
     echo "Conda not found at ${CONDA_BASE}. Please check Conda installation."
     exit 1
@@ -63,7 +59,7 @@ fi
 
 # Delete Install folder
 echo "Environment setup complete! ${ENV_NAME} created and all packages installed."
-echo "Deleting Install folder..."
 
-echo "Activate the environment with:"
-echo "conda activate ${ENV_NAME}"
+echo "----------------------------------------------------"
+echo "|Please do 'conda activate PREDICT' in your terminal|"
+echo "----------------------------------------------------"
