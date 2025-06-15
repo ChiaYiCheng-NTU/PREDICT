@@ -27,6 +27,7 @@ def main(TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
     print("Compare_Kmer_To_Motif...")
     OutPutDF = Compare_KmerToMotif.main(new_folder=new_folder, KmerList=KmerList, MotifList=MotifList, ScoreCutOff=ScoreCutOff, KeepTopMotifs=KeepTopMotifs)
     print("Compare_Kmer_To_Motif Done!")
+    print("--+--+--+--+--+--+--+--+--E..N..D--+--+--+--+--+--+--+--+--")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
     return new_folder, OutPutDF
 

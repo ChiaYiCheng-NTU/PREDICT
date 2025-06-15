@@ -5,7 +5,7 @@ def get_Seqences(new_folder):
     print(GeneFasPath)
     with open(GeneFasPath, "r") as GeneFasFile:
         lines = GeneFasFile.readlines()
-        Names = [line.strip(">").strip() for line in lines[0::2]]
+        Names = [line.strip(">").strip().split(" ")[0] for line in lines[0::2]]
         Seqs = [line.strip().upper() for line in lines[1::2]]
         GeneSequences = {Name: Seq for Name, Seq in zip(Names, Seqs)}
     return GeneSequences

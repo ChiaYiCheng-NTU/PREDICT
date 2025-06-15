@@ -79,7 +79,7 @@ def get_Kmer_list(Train_TPTN_folder, copy_num):
             break
     with open(Kmer_file) as Kmer_file:
         lines = [line.strip() for line in Kmer_file.readlines()][1:]
-        Kmer_list = lines.copy()
+        Kmer_list = sorted(set(lines.copy()))
     return Kmer_list
 
 def get_test_tp(Test_TPTN_folder, Train_TPTN_folder, copy_num):
@@ -126,8 +126,8 @@ def Make_DFs(Train_TPTN_folder, Test_TPTN_folder, copy_num):
     Train_TN_dic = get_tn(Train_TPTN_folder, copy_num)
     Test_TP_dic = get_test_tp(Test_TPTN_folder, Train_TPTN_folder, copy_num)
     Test_TN_dic = get_test_tn(Test_TPTN_folder, Train_TPTN_folder, copy_num)
+    
     Kmer_list = ["nt_" + Kmer for Kmer in get_Kmer_list(Train_TPTN_folder, copy_num)] + ["t_" + Kmer for Kmer in get_Kmer_list(Train_TPTN_folder, copy_num)]
-
     Train_X_df = pd.DataFrame(columns=Kmer_list)
     Train_y_df = pd.DataFrame(columns=["Class"])
     

@@ -21,20 +21,22 @@ def generate_colors(kmers):
     colors = fixed_colors[:kmer_count]
     return {kmers[i]: colors[i] for i in range(kmer_count)}
 
-def plot_kmers(SeqencesDict, KmerList, selected_genes):
+def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
     kmer_colors = generate_colors(KmerList)
     
     fig = go.Figure()
-
     y_offset = 0
-
     legend_added = set()
+    
+    max_seq_len = max(len(seq) for seq in SeqencesDict.values())
+    x_range = [-up_stream, max_seq_len - up_stream]  # count from upstream (negative)
 
     for selected_gene in selected_genes:
         sequence = SeqencesDict[selected_gene]
 
+        # gene body gray bar
         fig.add_trace(go.Scatter(
-            x=list(range(len(sequence))),
+            x=[i - up_stream for i in range(len(sequence))],
             y=[y_offset] * len(sequence),
             mode='lines',
             line=dict(color="lightgray", width=20),
@@ -42,20 +44,21 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes):
             showlegend=False
         ))
 
+        # gene label
         fig.add_annotation(
-            x=-1,
+            x=-up_stream - 5,
             y=y_offset,
             text=selected_gene,
             showarrow=False,
             xanchor="right",
             font=dict(size=16, color="white"),
-            bgcolor="black",
-            bordercolor="lightgray",
-            borderpad=0.1
+            bgcolor="#2C3E50",
+            bordercolor="white",
+            borderwidth=1,
+            borderpad=4,
         )
 
-        kmer_y_offset = y_offset
-
+        # plot kmer distribution
         for kmer in KmerList:
             color = kmer_colors[kmer]
             start = 0
@@ -65,8 +68,8 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes):
                     break
                 show_legend = kmer not in legend_added
                 fig.add_trace(go.Scatter(
-                    x=[start, start + len(kmer) - 1],
-                    y=[kmer_y_offset, kmer_y_offset],
+                    x=[start - up_stream, start - up_stream + len(kmer) - 1],
+                    y=[y_offset, y_offset],
                     mode='lines',
                     line=dict(color=color, width=40),
                     name=f"Kmer: {kmer}" if show_legend else "",
@@ -78,18 +81,29 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes):
 
         y_offset += 2
 
+    # TSS Vertical line
+    fig.add_shape(
+        type="line",
+        x0=0, x1=0,
+        y0=-1, y1=y_offset - 1 + 1,
+        line=dict(color="#cafcfb", width=2, dash="dot"),
+        layer="below"
+    )
+
+    # Layout
     fig.update_layout(
         title=f"Kmer Distribution in Selected Genes",
         xaxis_title="Sequence Position",
         yaxis=dict(showticklabels=False),
         showlegend=True,
-        height=400,
+        height=100 + y_offset * 50,
         margin=dict(r=100)
     )
 
     return fig
 
-def main(new_folder, SeqencesDict, KmerList):
+
+def main(new_folder, SeqencesDict, KmerList, up_stream):
     if 'KmerList' not in st.session_state:
         st.session_state.KmerList = KmerList
 
@@ -108,19 +122,8 @@ def main(new_folder, SeqencesDict, KmerList):
     )
     st.session_state.selected_kmers = selected_kmers
 
-    # 3. Add Kmers
-    new_kmer = st.text_input("Add new Kmer (e.g: ATCG)")
-    if st.button("Add Kmer") and new_kmer:
-        if new_kmer not in st.session_state.KmerList:
-            st.session_state.KmerList.append(new_kmer)
-            if 'selected_kmers' not in st.session_state:
-                st.session_state.selected_kmers = st.session_state.KmerList.copy()
-            else:
-                st.session_state.selected_kmers.append(new_kmer)
-            st.experimental_rerun()
-
     if selected_genes:
-        fig = plot_kmers(SeqencesDict, selected_kmers, selected_genes)
+        fig = plot_kmers(SeqencesDict, selected_kmers, selected_genes, up_stream)
         st.plotly_chart(fig)
 
         # Add Average distance information

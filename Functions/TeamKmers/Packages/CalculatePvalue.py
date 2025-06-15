@@ -5,16 +5,7 @@ from scipy.stats import wilcoxon
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 
-# def get_Pairs(GeneXKmerDF):
-#     Pairs = {}
-#     cols = GeneXKmerDF.columns
-#     for K1Index, K1 in enumerate(cols):
-#         K1_counts = GeneXKmerDF.loc[:,K1]
-#         for K2 in cols[K1Index:]:
-#             K2_counts = GeneXKmerDF.loc[:,K2]
-#             K1K2_IntersctionMin = tuple(np.minimum(K1_counts, K2_counts))
-#             Pairs[f"{K1}/{K2}"] = K1K2_IntersctionMin
-#     return Pairs ## Shape: {K1/K2: (G1CountMin, G2CountMin, ...)}
+
 def RC(kmer):
     complement = str.maketrans("ACGT", "TGCA")  # DNA complement mapping
     return kmer.translate(complement)[::-1]
@@ -81,17 +72,6 @@ def Wilcoxon_TPTNPairs(TPPairs, TNPairs):
         KmerPairsPvalue_Dict[Pair] = pvalue
     return KmerPairsPvalue_Dict ## Shape: {K1/K2: Pvalue, K1/K3: Pvalue, ..., K2/K3: Pvalue, ...}
 
-# def Wilcoxon_TPTNPairs(Pairs): ##Fake one, this is to Wilcoxon two cols in one DF.
-#     KmerPairsPvalue_Dict = {pair: 1 for pair in Pairs.keys()}
-#     for Pair in Pairs:
-#         Pair1 = Pairs[Pair][0]
-#         Pair2 = Pairs[Pair][1]
-#         _, pvalue = ranksums(Pair1, Pair2)
-#         if Pair.split("/")[0] == Pair.split("/")[1]:
-#             print(pvalue)
-#         KmerPairsPvalue_Dict[Pair] = pvalue
-#     return KmerPairsPvalue_Dict ## Shape: {K1/K2: Pvalue, K1/K3: Pvalue, ..., K2/K3: Pvalue, ...}
-
 def CosineSimilarity_TPTNPairs(TPPairs, TNPairs):
     def OverSampling(TPPair, TNPairm, seed=42):
         num_TP = len(TPPair)
@@ -142,19 +122,24 @@ def get_Pavlues(PvalueDF, pThreshold, Comparison):
         raise ValueError("arg: Comparison must be ('Greater') or 'Less'")
     return Filtered_Pvalues
 
+def CleanOuputs(OutputDF):
+    to_remove = []
+    for Kmer1, Kmer2 in OutputDF.index:
+        print(Kmer1, Kmer2)
+        if Kmer1.split("_")[1] == RC(Kmer2.split("_")[1]):
+            to_remove.append((Kmer1, Kmer2))
+    
+    print("TORMV")
+    print(to_remove)
+    return OutputDF.drop(index=to_remove)
+
 def main(new_folder, TPGeneXKmerDF, TNGeneXKmerDF, TPCSThreshold, TPTNCSThreshold):
     TPPairs, TPCSvalue_Dict, TPKmerTotalcount_DF = get_Pairs(TPGeneXKmerDF, "TP", TPCSThreshold)
     print(f"Got {len(TPPairs)} TPPairs!")
     print("Applying Wilcoxon on each pair...")
-    # inTPKmerPairsPvalue_Dict = Wilcoxon_TPTNPairs(TPPairs)
-    # TPPvalueDF = Make_DF(new_folder, inTPKmerPairsPvalue_Dict, TPGeneXKmerDF, "inTPPvalue")
-    # Filtered_Pvalues = get_Pavlues(TPPvalueDF, pThreshold, Comparison)
     TNPairs, _, _ = get_Pairs(TNGeneXKmerDF, "TN")
     KmerPairsPvalue_Dict = Wilcoxon_TPTNPairs(TPPairs, TNPairs)
     KmerCSvalue_Dict = CosineSimilarity_TPTNPairs(TPPairs, TNPairs)
-    # print(f"Got {len(TNPairs)} TNPairs!")
-    # print("Applying CosineSimilarity on each pair...")
-    # KmerCSvalue_Dict = CosineSimilarity_TPTNPairs(TPPairs, TNPairs)
     TPCSDF = Make_DF(new_folder, TPCSvalue_Dict, TPGeneXKmerDF, "TPCosineSimilarity")
     Pvalue_DF = Make_DF(new_folder, KmerPairsPvalue_Dict, TPGeneXKmerDF, "Pvalue")
     TPTNCS_DF = Make_DF(new_folder, KmerCSvalue_Dict, TPGeneXKmerDF, "TPTNCosineSimilarity")
@@ -169,9 +154,8 @@ def main(new_folder, TPGeneXKmerDF, TNGeneXKmerDF, TPCSThreshold, TPTNCSThreshol
         .sort_values(by="TPTN Cosine Similarity", ascending=True)
     OutputDF = pd.concat([OutputDF, TPKmerTotalcount_DF], axis=1, join='inner')
     OutputDF = OutputDF.rename_axis(index=["Kmer1", "Kmer2"])
-    OutputDF.to_csv(f"{new_folder}/Outputs/CoocurredKmerPairs.tsv", sep="\t")
+    Cleaned_OutputDF = CleanOuputs(OutputDF)
+    Cleaned_OutputDF.to_csv(f"{new_folder}/Outputs/CoocurredKmerPairs.tsv", sep="\t")
     
 
-    return Pvalue_DF, OutputDF
-    
-
+    return Pvalue_DF, Cleaned_OutputDF
