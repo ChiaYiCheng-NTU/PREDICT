@@ -5,9 +5,9 @@
 #PBS -q XXX
 #PBS -V
 
-echo "Installing at: $SCRIPT_DIR"
+echo "Installing at: $PBS_O_WORKDIR"
 echo "conda base path:$CONDA_BASE"
-cd $SCRIPT_DIR
+cd $PBS_O_WORKDIR
 
 # Ensure Conda is available    
 if [ ! -f "${CONDA_BASE}/etc/profile.d/conda.sh" ]; then
