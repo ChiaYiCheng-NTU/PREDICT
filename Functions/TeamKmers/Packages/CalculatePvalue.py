@@ -129,8 +129,6 @@ def CleanOuputs(OutputDF):
         if Kmer1.split("_")[1] == RC(Kmer2.split("_")[1]):
             to_remove.append((Kmer1, Kmer2))
     
-    print("TORMV")
-    print(to_remove)
     return OutputDF.drop(index=to_remove)
 
 def main(new_folder, TPGeneXKmerDF, TNGeneXKmerDF, TPCSThreshold, TPTNCSThreshold):

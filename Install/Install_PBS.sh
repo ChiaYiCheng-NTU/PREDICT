@@ -59,7 +59,7 @@ fi
 
 # Delete .gitkeep files
 echo "Environment setup complete! ${ENV_NAME} created and all packages installed."
-find $PBS_O_WORKDIR -name ".gitkeep" -type f -delete
+find "$PBS_O_WORKDIR/../" -name ".gitkeep" -type f -delete
 
 echo "----------------------------------------------------"
 echo "|Please do 'conda activate PREDICT' in your terminal|"

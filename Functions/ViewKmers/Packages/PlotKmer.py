@@ -86,7 +86,7 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
         type="line",
         x0=0, x1=0,
         y0=-1, y1=y_offset - 1 + 1,
-        line=dict(color="#cafcfb", width=2, dash="dot"),
+        line=dict(color="#2C3E50", width=2, dash="dot"),
         layer="below"
     )
 

@@ -54,7 +54,7 @@ fi
 
 # Delete .gitkeep files
 echo "Environment setup complete! ${ENV_NAME} created and all packages installed."
-find $PBS_O_WORKDIR -name ".gitkeep" -type f -delete
+find "$PWD/../" -name ".gitkeep" -type f -delete
 
 echo "Activate the environment with:"
 echo "conda activate ${ENV_NAME}"
