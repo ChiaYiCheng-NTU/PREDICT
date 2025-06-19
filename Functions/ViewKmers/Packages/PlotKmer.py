@@ -1,5 +1,8 @@
 import streamlit as st
 import plotly.graph_objects as go
+import pandas as pd
+import itertools
+import statistics
 
 fixed_colors = [
     "rgb(141, 211, 199)",
@@ -23,31 +26,42 @@ def generate_colors(kmers):
 
 def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
     kmer_colors = generate_colors(KmerList)
-    
     fig = go.Figure()
     y_offset = 0
-    legend_added = set()
-    
-    max_seq_len = max(len(seq) for seq in SeqencesDict.values())
-    x_range = [-up_stream, max_seq_len - up_stream]  # count from upstream (negative)
+    gene_data_list = []
 
+    max_seq_len = max(len(seq[0]) for seq in SeqencesDict.values())
+    x_range = [-up_stream, max_seq_len - up_stream]
+
+    # 1. Plot gene bar
     for selected_gene in selected_genes:
-        sequence = SeqencesDict[selected_gene]
+        NT_sequence = SeqencesDict[selected_gene][0]
+        T_sequence = SeqencesDict[selected_gene][1]
 
-        # gene body gray bar
+        # Non-template strand
         fig.add_trace(go.Scatter(
-            x=[i - up_stream for i in range(len(sequence))],
-            y=[y_offset] * len(sequence),
+            x=[i - up_stream for i in range(len(NT_sequence))],
+            y=[y_offset] * len(NT_sequence),
             mode='lines',
-            line=dict(color="lightgray", width=20),
-            name=f"Gene: {selected_gene}",
+            line=dict(color="darkgray", width=20),
+            name="Non-Template",
             showlegend=False
         ))
 
-        # gene label
+        # Template strand
+        fig.add_trace(go.Scatter(
+            x=[i - up_stream for i in range(len(T_sequence))],
+            y=[y_offset + 0.66] * len(T_sequence),
+            mode='lines',
+            line=dict(color="lightgray", width=20),
+            name="Non-Template",
+            showlegend=False
+        ))
+
+        # Gene label
         fig.add_annotation(
             x=-up_stream - 5,
-            y=y_offset,
+            y=y_offset + 0.33,
             text=selected_gene,
             showarrow=False,
             xanchor="right",
@@ -58,30 +72,63 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
             borderpad=4,
         )
 
-        # plot kmer distribution
-        for kmer in KmerList:
-            color = kmer_colors[kmer]
-            start = 0
-            while start < len(sequence):
-                start = sequence.find(kmer, start)
-                if start == -1:
-                    break
-                show_legend = kmer not in legend_added
-                fig.add_trace(go.Scatter(
-                    x=[start - up_stream, start - up_stream + len(kmer) - 1],
-                    y=[y_offset, y_offset],
-                    mode='lines',
-                    line=dict(color=color, width=40),
-                    name=f"Kmer: {kmer}" if show_legend else "",
-                    showlegend=show_legend
-                ))
-                if show_legend:
-                    legend_added.add(kmer)
-                start += 1
-
+        gene_data_list.append((selected_gene, NT_sequence, T_sequence, y_offset))
         y_offset += 2
 
-    # TSS Vertical line
+    # 2. Plot Kmer hit
+    legend_drawn = set()
+
+    for kmer in KmerList:
+        color = kmer_colors[kmer]
+
+        for selected_gene, NT_seq, T_seq, offset in gene_data_list:
+            # Non-template strand
+            pos = 0
+            while pos < len(NT_seq):
+                pos = NT_seq.find(kmer, pos)
+                if pos == -1:
+                    break
+                x = list(range(pos - up_stream, pos - up_stream + len(kmer)))
+                y = [offset] * len(x)
+                fig.add_trace(go.Scatter(
+                    x=x,
+                    y=y,
+                    mode='lines',
+                    line=dict(color=color, width=40),
+                    name=f"Kmer: {kmer}" if kmer not in legend_drawn else "",
+                    showlegend=kmer not in legend_drawn,
+                    hovertemplate=(
+                        f"Kmer: {kmer}<br>"
+                        f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<extra></extra>"
+                    )
+                ))
+                legend_drawn.add(kmer)
+                pos += 1
+
+            # Template strand
+            pos = 0
+            while pos < len(T_seq):
+                pos = T_seq.find(kmer, pos)
+                if pos == -1:
+                    break
+                x = list(range(pos - up_stream, pos - up_stream + len(kmer)))
+                y = [offset + 0.66] * len(x)
+                fig.add_trace(go.Scatter(
+                    x=x,
+                    y=y,
+                    mode='lines',
+                    line=dict(color=color, width=40),
+                    name=f"Kmer: {kmer}" if kmer not in legend_drawn else "",
+                    showlegend=kmer not in legend_drawn,
+                    hovertemplate=(
+                        f"Kmer: {kmer}<br>"
+                        f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<extra></extra>"
+                    )
+                ))
+                legend_drawn.add(kmer)
+                pos += 1
+
+    # TSS vertical line
     fig.add_shape(
         type="line",
         x0=0, x1=0,
@@ -92,7 +139,13 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
 
     # Layout
     fig.update_layout(
-        title=f"Kmer Distribution in Selected Genes",
+        title=dict(
+            text=(
+                "<span style='color:lightgray;'>Lightgray■: Template strand</span> | "
+                "<span style='color:darkgray;'>Darkgray■: Non-template strand</span>"
+            ),
+            x=0.5,
+            xanchor='center'),
         xaxis_title="Sequence Position",
         yaxis=dict(showticklabels=False),
         showlegend=True,
@@ -102,6 +155,64 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
 
     return fig
 
+
+def Show_df(selected_kmers, selected_genes, SeqencesDict, Orientation):
+    kmer_colors = generate_colors(selected_kmers)
+
+    if len(selected_kmers) > 1:
+        df = pd.DataFrame(index=selected_kmers, columns=selected_kmers)
+
+        for kmer1, kmer2 in itertools.combinations(selected_kmers, 2):
+            distances = []
+            for gene in selected_genes:
+                if Orientation == "NT":
+                    sequence = SeqencesDict[gene][0]
+                elif Orientation == "T":
+                    sequence = SeqencesDict[gene][1]
+                pos1 = [sequence.find(kmer1, i) for i in range(len(sequence)) if sequence.find(kmer1, i) != -1]
+                pos2 = [sequence.find(kmer2, i) for i in range(len(sequence)) if sequence.find(kmer2, i) != -1]
+                if pos1 and pos2:
+                    for p1 in pos1:
+                        for p2 in pos2:
+                            distances.append(abs(p1 - p2))
+            if distances:
+                avg_distance = sum(distances) / len(distances)
+                std_distance = statistics.stdev(distances) if len(distances) > 1 else 0
+                value = f"{avg_distance:.2f} ± {std_distance:.2f}"
+            else:
+                value = "N/A"
+
+            df.loc[kmer1, kmer2] = value
+            df.loc[kmer2, kmer1] = value
+
+        for kmer in selected_kmers:
+            df.loc[kmer, kmer] = "--"
+
+        def highlight(cell_value, row_kmer, col_kmer):
+            if cell_value == "--":
+                return "background-color: #eeeeee; color: black;"
+            if cell_value == "N/A":
+                return "background-color: #aaaaaa; color: white;"
+            color1 = kmer_colors[row_kmer]
+            color2 = kmer_colors[col_kmer]
+            return f"background-color: {color1}; color: white;"
+
+        # apply style
+        def style_func(val, row_idx, col_idx):
+            row_kmer = df.index[row_idx]
+            col_kmer = df.columns[col_idx]
+            return highlight(val, row_kmer, col_kmer)
+
+        styled_df = df.style.apply(
+            lambda df_: pd.DataFrame(
+                [[style_func(df_.iloc[i, j], i, j) for j in range(df_.shape[1])] for i in range(df_.shape[0])],
+                index=df_.index,
+                columns=df_.columns
+            ),
+            axis=None
+        )
+
+        st.dataframe(styled_df)
 
 def main(new_folder, SeqencesDict, KmerList, up_stream):
     if 'KmerList' not in st.session_state:
@@ -123,42 +234,16 @@ def main(new_folder, SeqencesDict, KmerList, up_stream):
     st.session_state.selected_kmers = selected_kmers
 
     if selected_genes:
+        st.header("Kmer Distribution in Selected Genes")
+        st.text("Click 'Fullscreen' to have better experience")
         fig = plot_kmers(SeqencesDict, selected_kmers, selected_genes, up_stream)
         st.plotly_chart(fig)
 
         # Add Average distance information
-        kmer_colors = generate_colors(selected_kmers)
-        st.subheader("Average Kmer Spacing in Genes")
-        if len(selected_kmers) > 1:
-            import itertools
-            import statistics
-            for kmer_pair in itertools.combinations(selected_kmers, 2):
-                kmer1, kmer2 = kmer_pair
-                color1, color2 = kmer_colors[kmer1], kmer_colors[kmer2]
-                distances = []
-                for gene in selected_genes:
-                    sequence = SeqencesDict[gene]
-                    pos1 = [sequence.find(kmer1, i) for i in range(len(sequence)) if sequence.find(kmer1, i) != -1]
-                    pos2 = [sequence.find(kmer2, i) for i in range(len(sequence)) if sequence.find(kmer2, i) != -1]
-                    if pos1 and pos2:
-                        for p1 in pos1:
-                            for p2 in pos2:
-                                distances.append(abs(p1 - p2))
-                if distances:
-                    avg_distance = sum(distances) / len(distances)
-                    std_distance = statistics.stdev(distances) if len(distances) > 1 else 0
-                    st.markdown(
-                        f"<span style='color:{color1};'>■</span>  Avg distance of {kmer1} and "
-                        f"<span style='color:{color2};'>■</span> {kmer2}:{avg_distance:.2f}, "
-                        f"Distance std:{std_distance:.2f}",
-                        unsafe_allow_html=True
-                    )
-                else:
-                    st.markdown(
-                        f"<span style='color:{color1};'>■</span> Avg distance of {kmer1} and "
-                        f"<span style='color:{color2};'>■</span> {kmer2}: N/A, "
-                        f"Distance std: N/A",
-                        unsafe_allow_html=True
-                    )
+        st.header("Average Kmer Spacing in Genes")
+        st.subheader("In Non-Template(Coding) Strands")
+        Show_df(selected_kmers, selected_genes, SeqencesDict, "NT")
+        st.subheader("In Template Strands")
+        Show_df(selected_kmers, selected_genes, SeqencesDict, "T")
     else:
         st.warning("Select at least one gene to show the chart.")
