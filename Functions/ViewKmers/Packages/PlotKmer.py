@@ -24,7 +24,7 @@ def generate_colors(kmers):
     colors = fixed_colors[:kmer_count]
     return {kmers[i]: colors[i] for i in range(kmer_count)}
 
-def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
+def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream, K2M_Dict):
     kmer_colors = generate_colors(KmerList)
     fig = go.Figure()
     y_offset = 0
@@ -99,7 +99,8 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
                     showlegend=kmer not in legend_drawn,
                     hovertemplate=(
                         f"Kmer: {kmer}<br>"
-                        f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<extra></extra>"
+                        f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<br>"
+                        f"Kmer2Motif: {', '.join(K2M_Dict[kmer])}<extra></extra>"
                     )
                 ))
                 legend_drawn.add(kmer)
@@ -122,7 +123,8 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
                     showlegend=kmer not in legend_drawn,
                     hovertemplate=(
                         f"Kmer: {kmer}<br>"
-                        f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<extra></extra>"
+                        f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<br>"
+                        f"Kmer2Motif: {', '.join(K2M_Dict[kmer])}<extra></extra>"
                     )
                 ))
                 legend_drawn.add(kmer)
@@ -141,8 +143,8 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream):
     fig.update_layout(
         title=dict(
             text=(
-                "<span style='color:lightgray;'>Lightgray■: Template strand</span> | "
-                "<span style='color:darkgray;'>Darkgray■: Non-template strand</span>"
+                "<span style='color:lightgray;'>■: Template strand</span> | "
+                "<span style='color:darkgray;'>■: Non-template strand</span>"
             ),
             x=0.5,
             xanchor='center'),
@@ -214,14 +216,15 @@ def Show_df(selected_kmers, selected_genes, SeqencesDict, Orientation):
 
         st.dataframe(styled_df)
 
-def main(new_folder, SeqencesDict, KmerList, up_stream):
+def main(new_folder, SeqencesDict, KmerList, up_stream, K2M_Dict):
     if 'KmerList' not in st.session_state:
         st.session_state.KmerList = KmerList
 
     # 1. select Genes
     selected_genes = st.multiselect(
         "Select gene (Mutiple allowed)", 
-        list(SeqencesDict.keys())
+        list(SeqencesDict.keys()),
+        default=st.session_state.get('selected_genes', SeqencesDict.keys())
     )
 
     # 2. select Kmers
@@ -236,7 +239,7 @@ def main(new_folder, SeqencesDict, KmerList, up_stream):
     if selected_genes:
         st.header("Kmer Distribution in Selected Genes")
         st.text("Click 'Fullscreen' to have better experience")
-        fig = plot_kmers(SeqencesDict, selected_kmers, selected_genes, up_stream)
+        fig = plot_kmers(SeqencesDict, selected_kmers, selected_genes, up_stream, K2M_Dict)
         st.plotly_chart(fig)
 
         # Add Average distance information

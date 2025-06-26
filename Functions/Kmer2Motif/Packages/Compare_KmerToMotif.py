@@ -134,15 +134,5 @@ def main(new_folder, KmerList, MotifList, ScoreCutOff, KeepTopMotifs):
     with Pool() as pool:
         results = pool.map(Compare_Process, tasks)
     OutPutDF = pd.concat(results, ignore_index=True)
-    # print(OutPutDF)
     OutPutDF.to_csv(f"{new_folder}/Kmer2Motif.tsv", sep="\t")
     return OutPutDF
-
-
-
-
-
-
-
-
-

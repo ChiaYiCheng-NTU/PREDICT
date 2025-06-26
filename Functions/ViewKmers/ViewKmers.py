@@ -9,9 +9,10 @@ from Functions.ViewKmers.Packages import Gff_to_Coord
 from Functions.ViewKmers.Packages import Coord_to_Fasta
 from Functions.ViewKmers.Packages import Gene_to_Fasta
 from Functions.ViewKmers.Packages import GetSequencesNKmers
+from Functions.ViewKmers.Packages import SentToKmer2Motif
 from Functions.ViewKmers.Packages import PlotKmer
 
-def main(features = "gene", up_stream = 1000, down_stream = 500):
+def main(features = "gene", up_stream = 1000, down_stream = 500, Motif = True):
     if 'round' in st.session_state:
         st.session_state.round += 1
     else:
@@ -50,6 +51,15 @@ def main(features = "gene", up_stream = 1000, down_stream = 500):
         print("=======================================================")
         #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
 
+        #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
+        if Motif == True:
+            print("Kmer2Motif...")
+            st.session_state.K2M_Dict = SentToKmer2Motif.main(st.session_state.new_folder)
+            print("Kmer2Motif Done!")
+        else:
+            st.session_state.K2M_Dict = None
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
+
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
     print("Get Gene Sequences and Kmers...")
     SeqencesDict, KmerList = GetSequencesNKmers.main(st.session_state.new_folder)
@@ -58,7 +68,9 @@ def main(features = "gene", up_stream = 1000, down_stream = 500):
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
 
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
-    PlotKmer.main(st.session_state.new_folder, SeqencesDict, KmerList, up_stream)
+    print("Plotting Kmers...")
+    PlotKmer.main(st.session_state.new_folder, SeqencesDict, KmerList, up_stream, K2M_Dict=st.session_state.K2M_Dict)
+    print("Plotting Kmers Done! You can interact with streamlit app now.")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
 
 if __name__ == "__main__":

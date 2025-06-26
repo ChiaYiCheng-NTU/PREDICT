@@ -26,7 +26,7 @@ def main():
     shutil.rmtree(source_dir)
     print(f"Source_dir({source_dir}) removed!")
 
-    To_make_dirs = ["./InputData/ViewKmers/Gff_and_Genome", "./InputData/ViewKmers/GeneList", "./InputData/ViewKmers/KmerList"]
+    To_make_dirs = ["./InputData/ViewKmers/Gff_and_Genome", "./InputData/ViewKmers/GeneList", "./InputData/ViewKmers/KmerList", "./InputData/ViewKmers/MotifList"]
     for To_make_dir in To_make_dirs:
         os.makedirs(To_make_dir)
     print(f"Source_dir({source_dir}) recreated!")

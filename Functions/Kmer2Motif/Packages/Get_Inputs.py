@@ -6,7 +6,11 @@ def get_KmerList(new_folder, TopKmers):
     KmerList_Folder = os.path.join(new_folder, "KmerList")
     KmerList_File = [file for file in sorted(os.listdir(KmerList_Folder)) if file.endswith(".kmer") or file.endswith(".tsv")][0]
     with open(os.path.join(KmerList_Folder, KmerList_File)) as f:
-        Kmers = [line.split("\t")[0] for line in f.readlines()[1:] if line != ""]
+        lines = f.readlines()
+        if "Kmer" in lines[0] or "kmer" in lines[0]:
+            Kmers = [line.split("\t")[0].strip() for line in lines[1:] if line != ""]
+        else :
+            Kmers = [line.split("\t")[0].strip() for line in lines if line != ""]
         Kmers = Kmers[:round(len(Kmers)*TopKmers)]
     Kmers_Counts = len(Kmers)
     print(f"Selected {Kmers_Counts} Kmers (Top {TopKmers}/1 of all input Kmers)")

@@ -1,5 +1,9 @@
 import os
 
+def Complement(kmer):
+    complement = str.maketrans("ACGT", "TGCA")  # DNA complement mapping
+    return kmer.translate(complement)
+
 def get_Seqences(new_folder):
     GeneFasPath = sorted([f"{new_folder}/GeneList/" + gene for gene in sorted(os.listdir(f"{new_folder}/GeneList")) if gene.endswith(".fa")])[0]
     print(GeneFasPath)
@@ -7,7 +11,8 @@ def get_Seqences(new_folder):
         lines = GeneFasFile.readlines()
         Names = [line.strip(">").strip().split(" ")[0] for line in lines[0::2]]
         Seqs = [line.strip().upper() for line in lines[1::2]]
-        GeneSequences = {Name: Seq for Name, Seq in zip(Names, Seqs)}
+        RC_Seqs = [Complement(seq) for seq in Seqs]
+        GeneSequences = {Name: (Seq, RC_Seq) for Name, Seq, RC_Seq in zip(Names, Seqs, RC_Seqs)}
     return GeneSequences
 
 def get_KmerList(new_folder):
