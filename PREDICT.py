@@ -1,16 +1,6 @@
 import sys
 import os
 import argparse
-sys.path.append('./Functions/FindKmers')
-sys.path.append('./Functions/Kmer2Motif')
-sys.path.append('./Functions/RanKmers')
-sys.path.append('./Functions/TeamKmers')
-sys.path.append('./Functions/ViewKmers')
-from Functions.FindKmers import FindKmers
-from Functions.Kmer2Motif import Kmer2Motif
-from Functions.RanKmers import RanKmers
-from Functions.TeamKmers import TeamKmers
-from Functions.ViewKmers import ViewKmers
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -20,6 +10,8 @@ if __name__ == '__main__':
     module = sys.argv[1]
 
     if module == 'FindKmers':
+        sys.path.append('./Functions/FindKmers')
+        from Functions.FindKmers import FindKmers
         parser = argparse.ArgumentParser(description="Run FindKmers Module")
         parser.add_argument('--features', type=str, default='gene', help='Feature type, default is "gene"')
         parser.add_argument('--pThreshold', type=float, default=0.01, help='p-value threshold')
@@ -36,6 +28,8 @@ if __name__ == '__main__':
         )
 
     elif module == 'Kmer2Motif':
+        sys.path.append('./Functions/Kmer2Motif')
+        from Functions.Kmer2Motif import Kmer2Motif
         parser = argparse.ArgumentParser(description="Run Kmer2Motif Module")
         parser.add_argument('--TopKmers', type=float, default=0.1, help='Top Kmers proportion')
         parser.add_argument('--KeepTopMotifs', type=float, default=0.1, help='Keep Top Motifs proportion')
@@ -48,6 +42,8 @@ if __name__ == '__main__':
         )
 
     elif module == 'RanKmers':
+        sys.path.append('./Functions/RanKmers')
+        from Functions.RanKmers import RanKmers
         parser = argparse.ArgumentParser(description="Run RanKmers Module")
         parser.add_argument('--features', type=str, default='gene', help='Feature type')
         parser.add_argument('--alg', type=str, default='RandomForest', help='Algorithm name')
@@ -62,6 +58,8 @@ if __name__ == '__main__':
         )
 
     elif module == 'TeamKmers':
+        sys.path.append('./Functions/TeamKmers')
+        from Functions.TeamKmers import TeamKmers
         parser = argparse.ArgumentParser(description="Run TeamKmers Module")
         parser.add_argument('--Motif', type=lambda x: (str(x).lower() == 'true'), default=True, help='Motif flag (True/False)')
         parser.add_argument('--TPCSThreshold', type=float, default=0.75, help='TP cosine similarity threshold(must larger)')
@@ -74,6 +72,8 @@ if __name__ == '__main__':
         )
 
     elif module == 'ViewKmers':
+        sys.path.append('./Functions/ViewKmers')
+        from Functions.ViewKmers import ViewKmers
         parser = argparse.ArgumentParser(description="Run ViewKmers Module")
         parser.add_argument('--features', type=str, default='gene', help='Feature type')
         parser.add_argument('--up_stream', type=int, default=1000, help='Upstream length')

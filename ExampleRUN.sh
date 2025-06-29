@@ -5,8 +5,13 @@
 #PBS -V
 
 # === initiate ===
-cd /path/to/PREDICT  ### Your "PREDICT" folder path
-source /path/to/conda/etc/profile.d/conda.sh
+echo "conda base path:$CONDA_BASE"
+# Ensure Conda is available    
+if [ ! -f "${CONDA_BASE}/etc/profile.d/conda.sh" ]; then
+    echo "Conda not found at ${CONDA_BASE}. Please check Conda installation."
+    exit 1
+fi
+source "${CONDA_BASE}/etc/profile.d/conda.sh"
 conda activate PREDICT
 
 # === Example for each module ===

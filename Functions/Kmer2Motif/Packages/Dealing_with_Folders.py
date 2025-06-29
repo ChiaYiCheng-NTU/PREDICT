@@ -9,18 +9,20 @@ def main():
     
     i = 1
     while True:
-        pre_destination_dir = f"./Results/{formatted_date}_Kmer2Motif{i:02d}"
+        pre_destination_dir = f"{os.path.dirname(os.path.realpath(__file__))}/../../../Results/{formatted_date}_Kmer2Motif{i:02d}"
         if not os.path.exists(pre_destination_dir):
             destination_dir = pre_destination_dir
             break
         i += 1
-    source_dir = './InputData/Kmer2Motif'
+    source_dir = source_dir = f'{os.path.dirname(os.path.realpath(__file__))}/../../../InputData/Kmer2Motif'
     shutil.copytree(source_dir, destination_dir)
     print(f"Destination_dir({destination_dir}) copied!")
     shutil.rmtree(source_dir)
     print(f"Source_dir({source_dir}) removed!")
 
-    To_make_dirs = ["./InputData/Kmer2Motif/KmerList", "./InputData/Kmer2Motif/MotifList", f"{destination_dir}/temp_Rscripts"]
+    To_make_dirs = [f"{source_dir}/KmerList",
+                    f"{source_dir}/MotifList",
+                    f"{destination_dir}/temp_Rscripts"]
     for To_make_dir in To_make_dirs:
         os.makedirs(To_make_dir)
     print(f"Source_dir({source_dir}) recreated!")

@@ -1,16 +1,15 @@
 import sys
 import os
-sys.path.append('./')
-sys.path.append('./Functions/FindKmers/Packages')
+sys.path.append(f"{os.path.dirname(os.path.realpath(__file__))}/Packages")
 from datetime import datetime
 import streamlit as st
-from Functions.ViewKmers.Packages import Dealing_with_Folders
-from Functions.ViewKmers.Packages import Gff_to_Coord
-from Functions.ViewKmers.Packages import Coord_to_Fasta
-from Functions.ViewKmers.Packages import Gene_to_Fasta
-from Functions.ViewKmers.Packages import GetSequencesNKmers
-from Functions.ViewKmers.Packages import SentToKmer2Motif
-from Functions.ViewKmers.Packages import PlotKmer
+import Dealing_with_Folders
+import Gff_to_Coord
+import Coord_to_Fasta
+import Gene_to_Fasta
+import GetSequencesNKmers
+import SentToKmer2Motif
+import PlotKmer
 
 def main(features = "gene", up_stream = 1000, down_stream = 500, Motif = True):
     if 'round' in st.session_state:

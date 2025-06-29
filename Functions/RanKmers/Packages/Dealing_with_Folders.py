@@ -9,24 +9,28 @@ def main():
     i = 1
     while True:
         if i < 10:
-            pre_destination_dir = f"./Results/{formatted_date}_RanKmers0{i}"
+            pre_destination_dir = f"{os.path.dirname(os.path.realpath(__file__))}/../../../Results/{formatted_date}_RanKmers0{i}"
             if not os.path.exists(pre_destination_dir):
                 destination_dir = pre_destination_dir
                 break
         elif i >= 10:
-            pre_destination_dir = f"./Results/{formatted_date}_RanKmers{i}"
+            pre_destination_dir = f"{os.path.dirname(os.path.realpath(__file__))}/../../../Results/{formatted_date}_RanKmers{i}"
             if not os.path.exists(pre_destination_dir):
                 destination_dir = pre_destination_dir
                 break
         i += 1
 
-    source_dir = './InputData/RanKmers'
+    source_dir = f'{os.path.dirname(os.path.realpath(__file__))}/../../../InputData/RanKmers'
     shutil.copytree(source_dir, destination_dir)
     print(f"Destination_dir({destination_dir}) copied!")
     shutil.rmtree(source_dir)
     print(f"Source_dir({source_dir}) removed!")
 
-    To_make_dirs = ["./InputData/RanKmers/KmerList", "./InputData/RanKmers/Gff_and_Genome", "./InputData/RanKmers/TP_and_TN", f"{pre_destination_dir}/Kmer/ML_Train_Result", f"{pre_destination_dir}/UsefulOutputs"]
+    To_make_dirs = [f"{source_dir}/KmerList",
+                    f"{source_dir}/Gff_and_Genome",
+                    f"{source_dir}/TP_and_TN",
+                    f"{pre_destination_dir}/Kmer/ML_Train_Result",
+                    f"{pre_destination_dir}/UsefulOutputs"]
     for To_make_dir in To_make_dirs:
         os.makedirs(To_make_dir)
     print(f"Source_dir({source_dir}) recreated!")

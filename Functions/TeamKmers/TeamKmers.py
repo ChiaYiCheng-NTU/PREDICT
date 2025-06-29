@@ -1,11 +1,12 @@
 import sys
-sys.path.append('./')
-from Functions.TeamKmers.Packages import Dealing_with_Folders
-from Functions.TeamKmers.Packages import Get_Inputs_GXK
-from Functions.TeamKmers.Packages import CalculatePvalue
-from Functions.TeamKmers.Packages import Generate_KmersMotif_input
-from Functions.TeamKmers.Packages import SentToKmer2Motif
-from Functions.TeamKmers.Packages import CalculateMotifCoScore 
+import os
+sys.path.append(f"{os.path.dirname(os.path.realpath(__file__))}/Packages")
+import Dealing_with_Folders
+import Get_Inputs_GXK
+import CalculatePvalue
+import Generate_KmersMotif_input
+import SentToKmer2Motif
+import CalculateMotifCoScore 
 
 def main(Motif=True, TPCSThreshold=0.75, TPTNCSThreshold=0.3):
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#

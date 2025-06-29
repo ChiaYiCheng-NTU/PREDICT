@@ -1,18 +1,18 @@
 import sys
 import os
-sys.path.append('./')
+sys.path.append(f"{os.path.dirname(os.path.realpath(__file__))}/Packages")
 from datetime import datetime
-from Functions.RanKmers.Packages import Dealing_with_Folders
-from Functions.RanKmers.Packages import Gff_to_Coord
-from Functions.RanKmers.Packages import Coord_to_Fasta
-from Functions.RanKmers.Packages import Split_data
-from Functions.RanKmers.Packages import TPTN_to_Fasta
-from Functions.RanKmers.Packages import Get_Kmers
-from Functions.RanKmers.Packages import Balance_Data
-from Functions.RanKmers.Packages import Kmers_to_DF
-from Functions.RanKmers.Packages import DF_to_ML
-from Functions.RanKmers.Packages import Integrate_ML_Results
-from Functions.RanKmers.Packages import Generate_Other_Outputs
+import Dealing_with_Folders
+import Gff_to_Coord
+import Coord_to_Fasta
+import Split_data
+import TPTN_to_Fasta
+import Get_Kmers
+import Balance_Data
+import Kmers_to_DF
+import DF_to_ML
+import Integrate_ML_Results
+import Generate_Other_Outputs
 import warnings
 warnings.filterwarnings("ignore")
 

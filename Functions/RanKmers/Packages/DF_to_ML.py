@@ -49,7 +49,7 @@ def read_Train_test_files(copy_num):
     return X_Train_df, y_Train_df, X_Test_df, y_Test_df
 
 def get_GridSearch_Hyperparameters():
-    with open("./Functions/RanKmers/Packages/GridSearch_Hyperparameters.json") as Hyperpars_file:
+    with open(f"{os.path.dirname(os.path.realpath(__file__))}/GridSearch_Hyperparameters.json") as Hyperpars_file:
         Hyperpars = json.load(Hyperpars_file)
 
     return Hyperpars

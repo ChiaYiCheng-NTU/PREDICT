@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.append('./Functions/FindKmers/Packages')
+sys.path.append(f'{os.path.dirname(os.path.realpath(__file__))}/Packages')
 from datetime import datetime
 import Dealing_with_Folders
 import Gff_to_Coord

@@ -1,9 +1,10 @@
 import sys
-sys.path.append('./')
+import os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import subprocess
-from Functions.Kmer2Motif.Packages import Dealing_with_Folders
-from Functions.Kmer2Motif.Packages import Get_Inputs
-from Functions.Kmer2Motif.Packages import Compare_KmerToMotif
+from Packages import Dealing_with_Folders
+from Packages import Get_Inputs
+from Packages import Compare_KmerToMotif
 
 def main(TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#

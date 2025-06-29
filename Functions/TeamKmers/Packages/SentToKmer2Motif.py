@@ -1,7 +1,7 @@
 import os
 import shutil
 import sys
-sys.path.append('./Functions/Kmer2Motif')
+sys.path.append(f'{os.path.dirname(os.path.realpath(__file__))}/../../Kmer2Motif')
 import Kmer2Motif
 
 def GetSrcDesPath(new_folder):
