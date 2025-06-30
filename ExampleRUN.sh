@@ -59,7 +59,7 @@ python /path/to/PREDICT/PREDICT.py FindKmers \
 # --gff "/path/to/gff" \
 # --genome "/path/to/genome" \
 # --tp "/path/to/tp" \
-# --tn "/path/to/tn"
+# --tn "/path/to/tn" \
 # --kmer "/path/to/kmer"
 
 # Custom arguments
@@ -67,7 +67,7 @@ python /path/to/PREDICT/PREDICT.py FindKmers \
 # --gff "/path/to/gff" \
 # --genome "/path/to/genome" \
 # --tp "/path/to/tp" \
-# --tn "/path/to/tn"
+# --tn "/path/to/tn" \
 # --kmer "/path/to/kmer" \
 # --features gene \
 # --alg RandomForest \
