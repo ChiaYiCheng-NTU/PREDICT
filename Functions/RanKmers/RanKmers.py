@@ -17,11 +17,11 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-def main(features = "gene", alg = "RandomForest", up_stream = 500, down_stream = 1000):
+def main(gff, genome, tp, tn, Kmer, features = "gene", alg = "RandomForest", up_stream = 500, down_stream = 1000):
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
         ## 1. Copy "FindKmers" folder(in "Demanded_Data" folder, old folder) to "Result" folder's new folder ##
     print("Dealing_with_folders...")
-    new_folder = Dealing_with_Folders.main()
+    new_folder = Dealing_with_Folders.main(gff, genome, tp, tn, Kmer)
     print("Dealing_with_folders Done!")
     print("=======================================================")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#

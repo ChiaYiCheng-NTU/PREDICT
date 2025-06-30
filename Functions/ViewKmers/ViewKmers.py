@@ -11,7 +11,7 @@ import GetSequencesNKmers
 import SentToKmer2Motif
 import PlotKmer
 
-def main(features = "gene", up_stream = 1000, down_stream = 500, Motif = True):
+def main(gff, genome, gene, Kmer, Motif, features = "gene", up_stream = 1000, down_stream = 500):
     if 'round' in st.session_state:
         st.session_state.round += 1
     else:
@@ -21,7 +21,7 @@ def main(features = "gene", up_stream = 1000, down_stream = 500, Motif = True):
         #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
             ## 1. Copy "ViewKmers" folder(in "Demanded_Data" folder, old folder) to "Result" folder's new folder ##
         print("Dealing_with_folders...")
-        st.session_state.new_folder = Dealing_with_Folders.main()
+        st.session_state.new_folder = Dealing_with_Folders.main(gff, genome, gene, Kmer, Motif)
         print("Dealing_with_folders Done!")
         print("=======================================================")
         #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
@@ -51,7 +51,7 @@ def main(features = "gene", up_stream = 1000, down_stream = 500, Motif = True):
         #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
 
         #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
-        if Motif == True:
+        if Motif != "":
             print("Kmer2Motif...")
             st.session_state.K2M_Dict = SentToKmer2Motif.main(st.session_state.new_folder)
             print("Kmer2Motif Done!")

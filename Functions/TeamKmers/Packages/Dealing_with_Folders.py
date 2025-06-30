@@ -2,7 +2,19 @@ import shutil
 import os
 from datetime import datetime
 
-def main():
+def FileExtention_changer(ParentFolder, FE, ori_path):
+    basename = os.path.basename(ori_path)
+    return os.path.join(ParentFolder, f"{basename}{FE}")
+
+def ClearFolder(source_dir, ChildFolder):
+    for filename in os.listdir(os.path.join(source_dir, ChildFolder)):
+        file_path = os.path.join(source_dir, ChildFolder, filename)
+        if os.path.isfile(file_path) or os.path.islink(file_path):
+            os.unlink(file_path)
+        elif os.path.isdir(file_path):
+            shutil.rmtree(file_path)
+
+def main(tp, tn, Motif):
     now = datetime.now()
     formatted_date = now.strftime("%Y_%m_%d")
 
@@ -15,6 +27,13 @@ def main():
             break
         i += 1
     source_dir = f'{os.path.dirname(os.path.realpath(__file__))}/../../../InputData/TeamKmers'
+    ClearFolder(source_dir, "GeneXKmerTable")
+    ClearFolder(source_dir, "MotifList")
+
+    shutil.copyfile(tp, os.path.join(source_dir, FileExtention_changer("GeneXKmerTable", "", tp)))
+    shutil.copyfile(tn, os.path.join(source_dir, FileExtention_changer("GeneXKmerTable", "", tn)))
+    shutil.copyfile(Motif, os.path.join(source_dir, FileExtention_changer("MotifList", ".motif", Motif)))
+
     shutil.copytree(source_dir, destination_dir)
     print(f"Destination_dir({destination_dir}) copied!")
     shutil.rmtree(source_dir)

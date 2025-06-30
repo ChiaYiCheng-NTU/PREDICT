@@ -84,5 +84,5 @@ def main(new_folder):
         fasta_path = os.path.join(fasta_folder, fasta_name)
         print(f"Fasta_source_path: {fasta_path}")
         GeneListFolder = f"{new_folder}/GeneList/"
-        GeneListFile = GeneListFolder + [file for file in os.listdir(GeneListFolder) if file.endswith(".genes") or file.endswith(".txt")][0]
+        GeneListFile = GeneListFolder + [file for file in os.listdir(GeneListFolder) if file.endswith(".gene") or file.endswith(".txt")][0]
         getseq(fasta=fasta_path, name=GeneListFile)

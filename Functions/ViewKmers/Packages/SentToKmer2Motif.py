@@ -24,9 +24,7 @@ def Make_K2M_Dict(K2M_OutPutDF):
 
 def main(new_folder):
     KmerSrcPath, MotifSrcPath, KmerDesPath, MotifDesPath = GetSrcDesPath(new_folder)
-    shutil.copy(KmerSrcPath, KmerDesPath)
-    shutil.copy(MotifSrcPath, MotifDesPath)
-    _, K2M_OutPutDF = Kmer2Motif.main(TopKmers = 1, KeepTopMotifs = 0.5, ScoreCutOff = 0.9)
+    _, K2M_OutPutDF = Kmer2Motif.main(KmerSrcPath, MotifSrcPath, TopKmers = 1, KeepTopMotifs = 0.5, ScoreCutOff = 0.9)
 
     K2M_Dict = Make_K2M_Dict(K2M_OutPutDF)
     return K2M_Dict

@@ -101,6 +101,9 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream, K2M_Dict):
                         f"Kmer: {kmer}<br>"
                         f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<br>"
                         f"Kmer2Motif: {', '.join(K2M_Dict[kmer])}<extra></extra>"
+                        if K2M_Dict and kmer in K2M_Dict
+                        else f"Kmer: {kmer}<br>"
+                            f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<extra></extra>"
                     )
                 ))
                 legend_drawn.add(kmer)
@@ -125,8 +128,11 @@ def plot_kmers(SeqencesDict, KmerList, selected_genes, up_stream, K2M_Dict):
                         f"Kmer: {kmer}<br>"
                         f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<br>"
                         f"Kmer2Motif: {', '.join(K2M_Dict[kmer])}<extra></extra>"
-                    )
-                ))
+                        if K2M_Dict and kmer in K2M_Dict
+                            else f"Kmer: {kmer}<br>"
+                                f"Position: {pos-up_stream} ~ {pos-up_stream + len(kmer) - 1}<extra></extra>"
+                        )
+                    ))
                 legend_drawn.add(kmer)
                 pos += 1
 

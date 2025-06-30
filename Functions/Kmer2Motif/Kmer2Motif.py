@@ -6,11 +6,11 @@ from Packages import Dealing_with_Folders
 from Packages import Get_Inputs
 from Packages import Compare_KmerToMotif
 
-def main(TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
+def main(Kmer, Motif, TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
         ## 1. Copy "Kmer2Motif" folder(in "Demanded_Data" folder, old folder) to "Result" folder's new folder ##
     print("Dealing with folders...")
-    new_folder = Dealing_with_Folders.main()
+    new_folder = Dealing_with_Folders.main(Kmer, Motif)
     print("Dealing with folders Done!")
     print("=======================================================")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
@@ -34,12 +34,3 @@ def main(TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-

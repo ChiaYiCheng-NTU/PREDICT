@@ -19,42 +19,97 @@ conda activate PREDICT
 
 # --- FindKmers ---
 # Basic usage (use default arguments)
-python /path/to/PREDICT/PREDICT.py FindKmers
+python /path/to/PREDICT/PREDICT.py FindKmers \
+--gff "/path/to/gff" \
+--genome "/path/to/genome" \
+--tp "/path/to/tp" \
+--tn "/path/to/tn"
 
 # Custom arguments
-# python /path/to/PREDICT/PREDICT.py FindKmers --features gene --pThreshold 0.01 --alg RandomForest --up_stream 2000 --down_stream 800
+# python /path/to/PREDICT/PREDICT.py FindKmers \
+# --gff "/path/to/gff" \
+# --genome "/path/to/genome" \
+# --tp "/path/to/tp" \
+# --tn "/path/to/tn" \
+# --features gene \
+# --pThreshold 0.01 \
+# --alg RandomForest \
+# --up_stream 2000 \
+# --down_stream 800
 
 
 # --- Kmer2Motif ---
 # Basic usage (use default arguments)
-# python /path/to/PREDICT/PREDICT.py Kmer2Motif
+# python /path/to/PREDICT/PREDICT.py Kmer2Motif \
+# --kmer "/path/to/kmer" \
+# --motif "/path/to/motif"
 
 # Custom arguments
-# python /path/to/PREDICT/PREDICT.py Kmer2Motif --TopKmers 0.05 --KeepTopMotifs 0.2 --ScoreCutOff 0.85
+# python /path/to/PREDICT/PREDICT.py Kmer2Motif \
+# --kmer "/path/to/kmer" \
+# --motif "/path/to/motif" \
+# --TopKmers 0.05 \
+# --KeepTopMotifs 0.2 \
+# --ScoreCutOff 0.85
 
 
 # --- RanKmers ---
 # Basic usage (use default arguments)
-# python /path/to/PREDICT/PREDICT.py RanKmers
+# python /path/to/PREDICT/PREDICT.py RanKmers \
+# --gff "/path/to/gff" \
+# --genome "/path/to/genome" \
+# --tp "/path/to/tp" \
+# --tn "/path/to/tn"
+# --kmer "/path/to/kmer"
 
 # Custom arguments
-# python /path/to/PREDICT/PREDICT.py RanKmers --features gene --alg RandomForest --up_stream 300 --down_stream 700
+# python /path/to/PREDICT/PREDICT.py RanKmers \
+# --gff "/path/to/gff" \
+# --genome "/path/to/genome" \
+# --tp "/path/to/tp" \
+# --tn "/path/to/tn"
+# --kmer "/path/to/kmer" \
+# --features gene \
+# --alg RandomForest \
+# --up_stream 300 \
+# --down_stream 700
 
 
 # --- TeamKmers ---
 # Basic usage (use default arguments)
-# python /path/to/PREDICT/PREDICT.py TeamKmers
+# python /path/to/PREDICT/PREDICT.py TeamKmers \
+# --tp "/path/to/tp" \
+# --tn "/path/to/tn" 
+
 
 # Custom arguments
-# python /path/to/PREDICT/PREDICT.py TeamKmers --Motif False --TPCSThreshold 0.75 --TPTNCSThreshold 0.3
+# python /path/to/PREDICT/PREDICT.py TeamKmers \
+# --tp "/path/to/tp" \
+# --tn "/path/to/tn" \
+# --motif "/path/to/motif" \
+# --TPCSThreshold 0.75 \
+# --TPTNCSThreshold 0.3
 
 
 # --- ViewKmers --- NOT recommended to run this module on HPC, better to run it locally in terminal.
 # Basic usage (use default arguments)
-# streamlit run /path/to/PREDICT/PREDICT.py -- ViewKmers
+# streamlit run /path/to/PREDICT/PREDICT.py -- ViewKmers \
+# --gff "/path/to/gff" \
+# --genome "/path/to/genome" \
+# --gene "/path/to/gene" \
+# --kmer "/path/to/kmer" \
+# --motif "/path/to/motif"
 
 # Custom arguments
-# streamlit run /path/to/PREDICT/PREDICT.py -- ViewKmers --features gene --up_stream 1000 --down_stream 500
+# streamlit run /path/to/PREDICT/PREDICT.py -- ViewKmers \
+# --gff "/path/to/gff" \
+# --genome "/path/to/genome" \
+# --gene "/path/to/gene" \
+# --kmer "/path/to/kmer" \
+# --motif "/path/to/motif"
+# --features gene \
+# --up_stream 1000 \
+# --down_stream 500
 
 
 

@@ -8,11 +8,11 @@ import Generate_KmersMotif_input
 import SentToKmer2Motif
 import CalculateMotifCoScore 
 
-def main(Motif=True, TPCSThreshold=0.75, TPTNCSThreshold=0.3):
+def main(tp, tn, Motif, TPCSThreshold=0.75, TPTNCSThreshold=0.3):
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
         # 1. Copy "TeamKmers" folder(in "Demanded_Data" folder, old folder) to "Result" folder's new folder ##
     print("Dealing_with_folders...")
-    new_folder = Dealing_with_Folders.main()
+    new_folder = Dealing_with_Folders.main(tp, tn, Motif)
     print("Dealing_with_folders Done!")
     print("=======================================================")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
@@ -34,7 +34,7 @@ def main(Motif=True, TPCSThreshold=0.75, TPTNCSThreshold=0.3):
     print("=======================================================")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
     
-    if Motif == True:
+    if Motif != "":
         #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
             ## 4. Generate Kmers2Motif input
         print("Generate Kmers2Motif input...")

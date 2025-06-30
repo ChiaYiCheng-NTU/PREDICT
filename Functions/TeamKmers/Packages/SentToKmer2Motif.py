@@ -16,12 +16,8 @@ def GetSrcDesPath(new_folder):
 
 def main(new_folder):
     K1SrcPath, K2SrcPath, MotifSrcPath, KmerDesPath, MotifDesPath = GetSrcDesPath(new_folder)
-    shutil.copy(K1SrcPath, KmerDesPath)
-    shutil.copy(MotifSrcPath, MotifDesPath)
-    K1_K2Mfolder, K1_OutPutDF = Kmer2Motif.main(TopKmers = 1, KeepTopMotifs = 0.5, ScoreCutOff = 0.9)
-
-    shutil.copy(K2SrcPath, KmerDesPath)
-    shutil.copy(MotifSrcPath,MotifDesPath)
-    K2_K2Mfolder, K2_OutPutDF = Kmer2Motif.main(TopKmers = 1, KeepTopMotifs = 0.5, ScoreCutOff = 0.9)
+    
+    K1_K2Mfolder, K1_OutPutDF = Kmer2Motif.main(K1SrcPath, MotifSrcPath, TopKmers = 1, KeepTopMotifs = 0.5, ScoreCutOff = 0.9)
+    K2_K2Mfolder, K2_OutPutDF = Kmer2Motif.main(K2SrcPath, MotifSrcPath, TopKmers = 1, KeepTopMotifs = 0.5, ScoreCutOff = 0.9)
     return K1_OutPutDF, K2_OutPutDF, K1_K2Mfolder, K2_K2Mfolder
 
