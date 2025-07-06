@@ -36,7 +36,8 @@ def main(gff, genome, gene, Kmer, Motif):
     shutil.copyfile(genome, os.path.join(source_dir, FileExtention_changer("Gff_and_Genome", ".fasta", genome)))
     shutil.copyfile(gene, os.path.join(source_dir, FileExtention_changer("GeneList", ".gene", gene)))
     shutil.copyfile(Kmer, os.path.join(source_dir, FileExtention_changer("KmerList", ".kmer", Kmer)))
-    shutil.copyfile(Motif, os.path.join(source_dir, FileExtention_changer("MotifList", ".motif", Motif)))
+    if Motif != "":
+        shutil.copyfile(Motif, os.path.join(source_dir, FileExtention_changer("MotifList", ".motif", Motif)))
 
     shutil.copytree(source_dir, destination_dir)
     print(f"Destination_dir({destination_dir}) copied!")
