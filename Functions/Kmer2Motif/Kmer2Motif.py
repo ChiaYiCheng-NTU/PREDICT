@@ -18,7 +18,7 @@ def main(Kmer, Motif, TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
         ## 2. Get "KmerList" and "MotifList" input
     print("Get_Inputs...")
-    KmerList, MotifList = Get_Inputs.main(new_folder=new_folder, TopKmers=TopKmers)
+    KmerList, MotifList = Get_Inputs_K2M.main(new_folder=new_folder, TopKmers=TopKmers)
     print("Get_Inputs Done!")
     print("=======================================================")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
