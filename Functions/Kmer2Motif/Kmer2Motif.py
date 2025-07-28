@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import subprocess
 from Packages import Dealing_with_Folders_K2M
-from Packages import Get_Inputs
+from Packages import Get_Inputs_K2M
 from Packages import Compare_KmerToMotif
 
 def main(Kmer, Motif, TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
