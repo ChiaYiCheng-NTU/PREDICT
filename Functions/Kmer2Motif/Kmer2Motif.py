@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import subprocess
-from Packages import Dealing_with_Folders
+from Packages import Dealing_with_Folders_K2M
 from Packages import Get_Inputs
 from Packages import Compare_KmerToMotif
 
@@ -10,7 +10,7 @@ def main(Kmer, Motif, TopKmers = 0.1, KeepTopMotifs = 0.1, ScoreCutOff = 0.9):
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
         ## 1. Copy "Kmer2Motif" folder(in "Demanded_Data" folder, old folder) to "Result" folder's new folder ##
     print("Dealing with folders...")
-    new_folder = Dealing_with_Folders.main(Kmer, Motif)
+    new_folder = Dealing_with_Folders_K2M.main(Kmer, Motif)
     print("Dealing with folders Done!")
     print("=======================================================")
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
