@@ -54,12 +54,12 @@ def gff_prom_to_coord_5utr(gff, features, up_stream, down_stream):
                     tmp_list=[prom2, 0]
                 Sequce_name = ""                     # sequence name
                 sequence_IDs_cell = one_row[-1].split(";")     # get gene name. "cell" means a cross of a column and a row.
-                if "Name" in one_row[-1]:            # has Name tag, # refers to last item in list
+                if "ID" in one_row[-1]:            # has ID tag, # refers to last item in list
                     for name in sequence_IDs_cell:
-                        if "Name" in name:
+                        if "ID" in name:
                             Sequce_name = name.split("=")[1]
                             break
-                        elif one_row[-1] != "":            # no name tag but not empty, use 1st
+                        elif one_row[-1] != "":            # no ID tag but not empty, use 1st
                             Sequce_name = sequence_IDs_cell[0].split("=")[1]
                         else:
                             print ("No desc:",one_row)
