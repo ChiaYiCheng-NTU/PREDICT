@@ -5,12 +5,27 @@ from multiprocessing import Pool
 
 
 def Make_CompareMotifs_command(new_folder, CreateMotif_command, Kmer):
-    motifs_list = [motif_ID.split(" <- ")[0] for motif_ID in CreateMotif_command.split("\n")]
+    motifs_list = [motif_ID.split(" <- ")[0] for motif_ID in CreateMotif_command.split("\n") if motif_ID.strip()]
     vector = "c(" + ", ".join(motifs_list) + ")"
-    command_str = f"compare_motifs_result <- compare_motifs({vector}, compare.to = 1, max.p = 0.01, max.e = Inf, nthreads = 0, tryRC = FALSE)\n"
-    command_str += "Output_Str <- ''\n"
-    command_str += "for (rowNum in 1:nrow(compare_motifs_result)) {\n    OutMotif <- compare_motifs_result[rowNum, 3]\n    OutScore <- compare_motifs_result[rowNum, 5]\n    Output_Str <- paste(Output_Str, paste(OutMotif, OutScore, sep='>'), sep=',')}\n"
-    command_str += "print(Output_Str)"
+    
+    command_str = f"""compare_motifs_result <- tryCatch({{
+  compare_motifs({vector}, compare.to = 1, max.p = 0.01, max.e = Inf, nthreads = 0, tryRC = FALSE)
+}}, error = function(e) {{
+  NULL
+}})
+Output_Str <- ''
+if (!is.null(compare_motifs_result) && nrow(compare_motifs_result) > 0) {{
+  for (rowNum in 1:nrow(compare_motifs_result)) {{
+    OutMotif <- compare_motifs_result[rowNum, 3]
+    OutScore <- compare_motifs_result[rowNum, 5]
+    Output_Str <- paste(Output_Str, paste(OutMotif, OutScore, sep='>'), sep=',')
+  }}
+}} else {{
+  Output_Str <- 'NO_HIT'
+}}
+print(Output_Str)
+"""
+    
     return command_str
 
 def Make_CreateMotif_command(KmersOrMotifs, MotifInfoList):
@@ -111,10 +126,10 @@ def Compare_Process(args):
     R_command = f"conda run -n PREDICT Rscript {tempRscript_path}"
     
     CompareMotifs_output = subprocess.run(R_command, shell=True, capture_output=True, text=True)
-    
-    UniversalMotif_Err = CompareMotifs_output.stderr
-    if UniversalMotif_Err != "":
-        raise ValueError(f"***If you got this Error, it's very likely that you inputed some Motifs with unrecognized alphabets***\n{UniversalMotif_Err}")
+
+    if CompareMotifs_output.returncode != 0:
+        raise ValueError(f"R process failed with error: {CompareMotifs_output.stderr}")
+
 
     temp_OutPutDF = GenerateOutputFormat(
         CompareMotifs_output, Ori_Kmer, KmerRank, ScoreCutOff, KeepTopMotifs
