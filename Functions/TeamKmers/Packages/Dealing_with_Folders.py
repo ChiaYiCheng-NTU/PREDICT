@@ -32,7 +32,8 @@ def main(tp, tn, Motif):
 
     shutil.copyfile(tp, os.path.join(source_dir, FileExtention_changer("GeneXKmerTable", "", tp)))
     shutil.copyfile(tn, os.path.join(source_dir, FileExtention_changer("GeneXKmerTable", "", tn)))
-    shutil.copyfile(Motif, os.path.join(source_dir, FileExtention_changer("MotifList", ".motif", Motif)))
+    if Motif != "":
+        shutil.copyfile(Motif, os.path.join(source_dir, FileExtention_changer("MotifList", ".motif", Motif)))
 
     shutil.copytree(source_dir, destination_dir)
     print(f"Destination_dir({destination_dir}) copied!")

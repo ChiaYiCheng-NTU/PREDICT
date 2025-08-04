@@ -84,8 +84,8 @@ python /path/to/PREDICT/PREDICT.py FindKmers \
 
 # Custom arguments
 # python /path/to/PREDICT/PREDICT.py TeamKmers \
-# --tp "/path/to/tp" \
-# --tn "/path/to/tn" \
+# --tp "/path/to/tpXkmer_Table" \
+# --tn "/path/to/tnXkmer_Table" \
 # --motif "/path/to/motif" \
 # --TPCSThreshold 0.75 \
 # --TPTNCSThreshold 0.3
@@ -98,7 +98,6 @@ python /path/to/PREDICT/PREDICT.py FindKmers \
 # --genome "/path/to/genome" \
 # --gene "/path/to/gene" \
 # --kmer "/path/to/kmer" \
-# --motif "/path/to/motif"
 
 # Custom arguments
 # streamlit run /path/to/PREDICT/PREDICT.py -- ViewKmers \
