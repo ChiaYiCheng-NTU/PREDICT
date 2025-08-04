@@ -91,7 +91,9 @@ python /path/to/PREDICT/PREDICT.py FindKmers \
 # --TPTNCSThreshold 0.3
 
 
-# --- ViewKmers --- NOT recommended to run this module on HPC, better to run it locally in terminal.
+# --- ViewKmers --- 
+## NOT recommended to submit this module on HPC, better to run it in terminal. ##
+## Users can just copy the commands below and paste in terminal to run. ###
 # Basic usage (use default arguments)
 # streamlit run /path/to/PREDICT/PREDICT.py -- ViewKmers \
 # --gff "/path/to/gff" \
