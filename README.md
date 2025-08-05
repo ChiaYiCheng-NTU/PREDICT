@@ -1,6 +1,5 @@
-![WorkFlow](WorkFlow.jpg)
 # PREDICT: A Modular and Versatile Python Tool for Streamlining Cis-Regulatory Element Discovery
-
+![WorkFlow](WorkFlow.jpg)
 ## Introduction
 
 Understanding how genes are transcriptionally regulated is a central goal in functional genomics, particularly in plants and non-model organisms where transcription factor binding data are often limited. Gene expression is controlled by short regulatory DNA sequences known as **cis-regulatory elements (CREs)**, which interact with transcription factors (TFs) to activate or repress transcription. Identifying these sequences and evaluating their combinatorial influence remains challenging due to the fragmented nature of current computational tools.
