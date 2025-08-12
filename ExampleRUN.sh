@@ -17,16 +17,16 @@ conda activate PREDICT
 # === Example for each module ===
 # For the meaning of each argument, please see README.md "Arguments".
 
-# --- ImpactKmers ---
+# --- KmerImpact ---
 # Basic usage (use default arguments)
-python /path/to/PREDICT/PREDICT.py ImpactKmers \
+python /path/to/PREDICT/PREDICT.py KmerImpact \
 --gff "/path/to/gff" \
 --genome "/path/to/genome" \
 --tp "/path/to/tp" \
 --tn "/path/to/tn"
 
 # Custom arguments
-# python /path/to/PREDICT/PREDICT.py ImpactKmers \
+# python /path/to/PREDICT/PREDICT.py KmerImpact \
 # --gff "/path/to/gff" \
 # --genome "/path/to/genome" \
 # --tp "/path/to/tp" \
