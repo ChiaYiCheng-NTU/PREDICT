@@ -20,13 +20,13 @@ def main(gff, genome, tp, tn):
 
     i = 1
     while True:
-        pre_destination_dir = f"{os.path.dirname(os.path.realpath(__file__))}/../../../Results/{formatted_date}_FindKmers{i:02d}"
+        pre_destination_dir = f"{os.path.dirname(os.path.realpath(__file__))}/../../../Results/{formatted_date}_ImpactKmers{i:02d}"
         if not os.path.exists(pre_destination_dir):
             destination_dir = pre_destination_dir
             break
         i += 1
 
-    source_dir = f'{os.path.dirname(os.path.realpath(__file__))}/../../../InputData/FindKmers'
+    source_dir = f'{os.path.dirname(os.path.realpath(__file__))}/../../../InputData/ImpactKmers'
     ClearFolder(source_dir, "Gff_and_Genome")
     ClearFolder(source_dir, "TP_and_TN")
     

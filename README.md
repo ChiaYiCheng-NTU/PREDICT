@@ -30,7 +30,7 @@ This workflow supports hypothesis generation for regulatory motif function and n
 
 PREDICT includes **five core modules**. Each module performs a distinct analytical function and can be run independently or as part of a complete pipeline.
 
-### 1. FindKmers – Identify Enriched Sequences and Evaluate Their Prediction Power
+### 1. ImpactKmers – Identify Enriched Sequences and Evaluate Their Prediction Power
 
 #### Scoring Formulas
 
@@ -65,7 +65,7 @@ PREDICT includes **five core modules**. Each module performs a distinct analytic
 
 ### 2. Kmer2Motif – Match Sequences to Known TF Motifs
 
-- **Input**: K-mers from FindKmers and user-provided motif database (FASTA format).
+- **Input**: K-mers from ImpactKmers and user-provided motif database (FASTA format).
 - **Function**: Matches k-mers to consensus motifs using similarity scoring algorithms.
 - **Output**: Ranked motif-kmer mapping table with similarity scores.
 

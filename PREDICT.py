@@ -4,15 +4,15 @@ import argparse
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Please provide the module you want to execute. e.g.: python PREDICT.py FindKmers")
+        print("Please provide the module you want to execute. e.g.: python PREDICT.py ImpactKmers")
         sys.exit(1)
 
     module = sys.argv[1]
 
-    if module == 'FindKmers':
-        sys.path.append('./Functions/FindKmers')
-        from Functions.FindKmers import FindKmers
-        parser = argparse.ArgumentParser(description="Run FindKmers Module")
+    if module == 'ImpactKmers':
+        sys.path.append('./Functions/ImpactKmers')
+        from Functions.ImpactKmers import ImpactKmers
+        parser = argparse.ArgumentParser(description="Run ImpactKmers Module")
         ## Required
         parser.add_argument('--gff', type=str, required=True, help='Path of your gff file')
         parser.add_argument('--genome', type=str, required=True, help='Path of your genome file')
@@ -26,7 +26,7 @@ if __name__ == '__main__':
         parser.add_argument('--up_stream', type=int, default=1000, help='Upstream length')
         parser.add_argument('--down_stream', type=int, default=500, help='Downstream length')
         args = parser.parse_args(sys.argv[2:])
-        FindKmers.main(
+        ImpactKmers.main(
             gff=args.gff,
             genome=args.genome,
             tp=args.tp,
