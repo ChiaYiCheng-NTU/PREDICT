@@ -18,7 +18,7 @@ def main(tp, tn, Motif, TPCSThreshold=0.75, TPTNCSThreshold=0.3):
     #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<#
 
     #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#
-        ## 2. Get "KmerXKmerTable" input
+        ## 2. Get "GeneXKmerTable" input
     print("Get_Inputs...")
     TPGeneXKmerDF, TNGeneXKmerDF = Get_Inputs_GXK.main(new_folder)
     print("Get_Inputs Done!")

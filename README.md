@@ -51,9 +51,6 @@ PREDICT includes **five core modules**. Each module performs a distinct analytic
   - `Kmer_ID`: Encoded as `[strand]K[length][numeric representation of sequence]`
     - Example: `nt_K05_23223` → k-mer of length 5 on the non-template strand.
 
-- **KmerXKmer_table.tsv**:
-  - Each cell contains the co-occurrence count of two k-mers across gene regulatory regions.
-
 - **TPGeneXKmer_Table.tsv / TNGeneXKmer_Table.tsv**:
   - Matrix of raw k-mer counts per gene used in machine learning model training.
 

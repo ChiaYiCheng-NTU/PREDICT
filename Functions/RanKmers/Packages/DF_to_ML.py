@@ -162,7 +162,7 @@ def main(new_folder, copies, alg="RandomForest", random_state=42):
     total_rank = aucroc_rank + mcc_rank
     BestCopy = str(np.argmin(total_rank)+1)
     BestCopy_Model = Models_Dict[BestCopy][0]
-    dump(BestCopy_Model, f'{Train_Result_folder}/BestModel_Copy{BestCopy}.joblib')
+    # dump(BestCopy_Model, f'{Train_Result_folder}/BestModel_Copy{BestCopy}.joblib')
 
     return BestCopy
 

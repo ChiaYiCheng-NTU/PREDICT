@@ -13,7 +13,7 @@ def GrabExistedResults(new_folder, BestCopy):
     UsefulOutputs_Path = f"{new_folder}/UsefulOutputs"
     shutil.copy(f"{ML_Train_Result_Path}/ALLCopies_mean_score.txt", f"{UsefulOutputs_Path}/ALLCopies_mean_score.txt")
     shutil.copy(f"{ML_Train_Result_Path}/AllCopies_FeatureImportance.txt", f"{UsefulOutputs_Path}/AllCopies_FeatureImportance.txt")
-    shutil.copy(f"{ML_Train_Result_Path}/BestModel_Copy{BestCopy}.joblib", f"{UsefulOutputs_Path}/BestModel_Copy{BestCopy}.joblib")
+    # shutil.copy(f"{ML_Train_Result_Path}/BestModel_Copy{BestCopy}.joblib", f"{UsefulOutputs_Path}/BestModel_Copy{BestCopy}.joblib")
 
 
 def Generate_GeneTable(new_folder, BestCopy):
@@ -131,7 +131,7 @@ def Generate_KmerShortTable(new_folder):
 def main(new_folder, BestCopy):
     GrabExistedResults(new_folder, BestCopy)
     TPGeneXKmer_DF, TNGeneXKmer_DF = Generate_GeneTable(new_folder, BestCopy)
-    KmerXKmer_DF = Generate_KmerXKmerTable(new_folder, TPGeneXKmer_DF)
+    # KmerXKmer_DF = Generate_KmerXKmerTable(new_folder, TPGeneXKmer_DF)
     Generate_KmerShortTable(new_folder)
 
 
