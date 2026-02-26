@@ -72,10 +72,19 @@ def getseq(fasta,name,tokens="",verbose=0):
             if ndict[i] == 0:
                 missing.append(i)
 
-    if verbose:
-        print (" Redun:%i, Unique:%i, Found:%i, Missed:%i" % \
-            (countR,countN,countF,len(missing)))
+    print (" Redun:%i, Unique:%i, Found:%i, Missed:%i" % \
+        (countR,countN,countF,len(missing)))
 
+    if len(missing) > 0:
+        print (f"You have {len(missing)} gene(s) missing in {len(ndict.keys())} input ({len(missing)/len(ndict.keys())*100:.2f}%)")
+    
+    if countF == 0:
+        print("******************* ERROR *******************")
+        print("******************* ERROR *******************")
+        print("No sequences were found in the input files.")
+        print("It is likely that the identifiers in the .tp/.tn files do not match any of the identifiers in the .gff3 file.")
+        print("***************** ERROR END *****************")
+        
     return missing
 
 def main(new_folder, For_BedData):
