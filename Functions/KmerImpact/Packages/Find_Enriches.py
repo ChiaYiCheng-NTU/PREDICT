@@ -193,6 +193,9 @@ def process_large_kmers(kmers, pos, neg):
     # 2. Count (Return Numpy Arrays)
     pos_counts, neg_counts = Auto_CountKmers(auto, pos, neg, n_kmers)
     
+    if (len(pos_counts) == 0) or (len(neg_counts) == 0):
+        raise ValueError("No sequences to count kmers. Please check whether the IDs in the .tp/.tn files match the IDs in the .gff3 file.")
+
     # 3. Significance Test (Return DataFrame)
     return WilcoxonRankSum(kmers, pos_counts, neg_counts)
 
