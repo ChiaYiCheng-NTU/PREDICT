@@ -14,7 +14,7 @@ source "${CONDA_BASE}/etc/profile.d/conda.sh"
 
 # Check for required files
 ENV_NAME="PREDICT"
-
+VERSION="1.2.0"
 if [ ! -f "PREDICT.yml" ]; then
     echo "Error: PREDICT.yml not found in current directory."
     exit 1
@@ -24,6 +24,8 @@ if [ ! -f "R_Packages.R" ]; then
     echo "Error: R_Packages.R not found in current directory."
     exit 1
 fi
+
+echo "Installing PREDICT v${VERSION}"
 
 # Create Conda environment
 echo "Creating Conda environment: ${ENV_NAME}..."
