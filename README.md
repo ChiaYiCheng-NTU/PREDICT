@@ -1,4 +1,5 @@
 # PREDICT: A Modular and Versatile Python Tool for Streamlining Cis-Regulatory Element Discovery
+![DOI](zenodo.18797914.svg)
 ![WorkFlow](WorkFlow.jpg)
 ## Introduction
 
